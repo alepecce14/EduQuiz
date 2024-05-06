@@ -6,4 +6,5 @@ The project was originally based on the [Bard-API](https://github.com/dsdanielpa
 
 # Website
 You can try EduQuiz [here](https://eduquiz.pythonanywhere.com/)
+You can either prompt a general topic (eg. The history of the computer) or, if you want better result, some notes you took in class or from a textbook.
 Functionality is not guaranteed as, at the moment, cookie stability isn't the best.
