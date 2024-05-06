@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800&display=swap');
+      
+          body {
+              background: rgb(44,16,75);
+              background: linear-gradient(90deg, rgba(44,16,75,1) 0%, rgba(90,16,145,1) 38%, rgba(0,81,199,1) 80%);
+              font-family: 'Montserrat', sans-serif;
+          }
+      
+          h1 {
+              font-family: 'Montserrat', sans-serif;
+              text-align: center;
+              font-weight: 800;
+              font-size: 300%;
+              color: white;
+          }
+      
+          label {
+              color: white;
+              font-weight: 500;
+              font-size: 120%;
+          }
+      
+          #promptsection {
+              text-align: center;
+              color: red;
+          }
+      
+          textarea {
+              width: 50%;
+              height: 270px;
+              font-family: 'Montserrat', sans-serif;
+              margin-top: 2%;
+              margin-bottom: 4%;
+              
+              
+          }
+      
+          button {
+              font-family: 'Montserrat', sans-serif;
+              height: 50px;
+              width: 150px;
+              border-radius: 12px;
+              font-weight: 800;
+              font-size: large;
+              background-color: white;
+              margin-bottom: 8%;
+          }
+      
+          button:hover {
+              color: white;
+              background-color: darkblue;
+              transition-timing-function: ease-in-out;
+              transition-duration: 0.5s;
+          }
+      
+          #answerResult {
+              color: white;
+              margin-left: 30px;
+          }
+      
+          .radio {
+              margin-bottom: 20px;
+              vertical-align: middle;
+              text-align: center;
+          }
+      
+          #qnum {
+              text-align: center;
+              margin-bottom: 20px;
+      
+          }
+      
+          #qnumsel {
+              border-radius: 4px;
+              width: 40px;
+              height: 30px;
+              margin-top: 10px;
+          }
+      
+          #qnumlabel {
+              font-size: medium;
+          }
+      
+          #tip {
+              background-color: black;
+              margin-left: 18%;
+              margin-right: 18%;
+          }
+      
+          #selectlabel {
+              color: white;
+              font-size: 150%;
+              font-weight: bold;
+              text-align: center;
+          }
+      
+          #select {
+              margin-left: 38%;
+          }
+
+          #anspref {
+              margin-left: 38%;
+          }
+      
+          #KI {
+              font-weight: bold;
+          }
+      
+          #issues {
+              text-align: left;
+          }
+      
+      </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuiz Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>EduQuiz (Demo)</h1>
+
+<div id="select">
+    <input type="radio" id="Multiple" value="Multiple" name="mode">
+    <label for="Multiple">Multiple Choices Quiz</label><br>
+    <input type="radio" id="Open" value="Open" name="mode">
+    <label for="Open">Open-Ended Questions</label><br>
+</div><br>
+
+<div id="anspref">
+    <input type="radio" id="Yes" value="Yes" name="anspref">
+    <label for="Yes">Include Solutions</label><br>
+    <input type="radio" id="No" value="No" name="anspref">
+    <label for="No">Do Not Include Solutions</label><br>
+</div><br>
+
+<div id="qnum">
+    <label for="qnumsel">Number of questions (1-15): </label>
+    <input type="number" id="qnumsel" name="qnumsel" min="1" max="15" value="1"><br>
+</div>
+
+<div id="promptsection">
+    <label for="promptInput">Enter Prompt:</label><br>
+    <textarea id="promptInput" rows="6" cols="50"></textarea><br>
+    <button onclick="getAnswer()">Get Answer</button>
+</div>
+
+<div id="answerResult">
+    <!-- Answer will be displayed here -->
+</div>
+
+<script>
+function getAnswer() {
+    var promptText = $("#promptInput").val();
+    var selectedMode = $("input[name='mode']:checked").val();
+    var selectedNum = $("#qnumsel").val();
+    var selectedAnsPref = $("input[name='anspref']:checked").val();
+
+    $.ajax({
+        url: "/get_answer",
+        method: "POST",
+        data: { prompt: promptText, mode: selectedMode, num: selectedNum, ans: selectedAnsPref },
+        success: function(data) {
+            displayAnswer(data.answer);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+            displayAnswer("Error occurred while processing the request.");
+        }
+    });
+}
+
+function displayAnswer(answer) {
+    $("#answerResult").html("<strong>Answer:</strong><br>" + answer);
+}
+</script>
+
+</body>
+</html>
